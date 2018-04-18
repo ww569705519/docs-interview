@@ -11,10 +11,10 @@
 
 首先：CSS规范规定，每个元素都有`display`属性，确定该元素的类型，每个元素都有默认的`display`值，如div的display默认值为“block”，则为“块级”元素；span默认`display`属性值为`inline`，是“行内”元素。
 
-（1）行内元素有：`a b span img input select strong`（强调的语气）
-（2）块级元素有：`div ul ol li dl dt dd h1 h2 h3 h4…p`
+- 行内元素有：`a b span img input select strong`（强调的语气）
+- 块级元素有：`div ul ol li dl dt dd h1 h2 h3 h4…p`
 
-（3）常见的空元素：
+- 常见的空元素：
 `<br> <hr> <img> <input> <link> <meta>`
 鲜为人知的是：
 `<area> <base> <col> <command> <embed> <keygen> <param> <source> <track> <wbr>`
