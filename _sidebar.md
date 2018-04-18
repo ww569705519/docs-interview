@@ -2,7 +2,7 @@
 * [javascript](page/javascript)
 * [前端性能优化](page/performance)
 * [css预处理语言](page/less)
-* [http协议相关](page/http协议相关)
+* [http协议相关](page/http)
 * [vuejs](page/vuejs)
 * [webpack前端构建工具](page/webpack)
 * [nodejs](page/nodejs)
