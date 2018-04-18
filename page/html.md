@@ -19,7 +19,7 @@
 鲜为人知的是：
 `<area> <base> <col> <command> <embed> <keygen> <param> <source> <track> <wbr>`
 
-不同浏览器（版本）、HTML4（5）、CSS2等实际略有差异
+!> 不同浏览器（版本）、HTML4（5）、CSS2等实际略有差异
 参考: http://stackoverflow.com/questions/6867254/browsers-default-css-for-html-elements
 
 
@@ -27,28 +27,29 @@
 #### 页面导入样式时，使用link和@import有什么区别？
 
 
-（1）link属于`XHTML`标签，除了加载CSS外，还能用于定义RSS, 定义rel连接属性等作用；而`@import`是CSS提供的，只能用于加载CSS;
+- link属于`XHTML`标签，除了加载CSS外，还能用于定义RSS, 定义rel连接属性等作用；而`@import`是CSS提供的，只能用于加载CSS;
 
-（2）页面被加载的时，link会同时被加载，而@import引用的CSS会等到页面被加载完再加载;
+- 页面被加载的时，link会同时被加载，而@import引用的CSS会等到页面被加载完再加载;
 
-（3）`import`是CSS2.1 提出的，只在IE5以上才能被识别，而link是XHTML标签，无兼容问题;
+- `import`是CSS2.1 提出的，只在IE5以上才能被识别，而link是XHTML标签，无兼容问题;
 
 
 #### 介绍一下你对浏览器内核的理解？
 
 主要分成两部分：渲染引擎`(layout engineer或Rendering Engine)`和JS引擎。
-渲染引擎：负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入CSS等），以及计算网页的显示方式，然后会输出至显示器或打印机。浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。所有网页浏览器、电子邮件客户端以及其它需要编辑、显示网络内容的应用程序都需要内核。
 
-JS引擎则：解析和执行`javascript`来实现网页的动态效果。
+- 渲染引擎：负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入CSS等），以及计算网页的显示方式，然后会输出至显示器或打印机。浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。所有网页浏览器、电子邮件客户端以及其它需要编辑、显示网络内容的应用程序都需要内核。
+
+- JS引擎则：解析和执行`javascript`来实现网页的动态效果。
 
 最开始渲染引擎和JS引擎并没有区分的很明确，后来JS引擎越来越独立，内核就倾向于只指渲染引擎。
 
 #### 常见的浏览器内核有哪些？
 
-	- Trident内核：IE,MaxThon,TT,The World,360,搜狗浏览器等。[又称MSHTML]
-	- Gecko内核：Netscape6及以上版本，FF,MozillaSuite/SeaMonkey等
-	- Presto内核：Opera7及以上。      [Opera内核原为：Presto，现为：Blink;]
-	- Webkit内核：Safari,Chrome等。   [ Chrome的：Blink（WebKit的分支）]
+- Trident内核：IE,MaxThon,TT,The World,360,搜狗浏览器等。[又称MSHTML]
+- Gecko内核：Netscape6及以上版本，FF,MozillaSuite/SeaMonkey等
+- Presto内核：Opera7及以上。      [Opera内核原为：Presto，现为：Blink;]
+- Webkit内核：Safari,Chrome等。   [ Chrome的：Blink（WebKit的分支）]
 
 详细文章：[浏览器内核的解析和对比](http://www.cnblogs.com/fullhouse/archive/2011/12/19/2293455.html)
 
@@ -57,7 +58,6 @@ JS引擎则：解析和执行`javascript`来实现网页的动态效果。
 #### **HTML5**有哪些新特性、移除了那些元素？如何处理HTML5新标签的浏览器兼容问题？如何区分 HTML 和 HTML5？
 
 !> HTML5 现在已经不是 SGML 的子集，主要是关于图像，位置，存储，多任务等功能的增加。
-
 
 - 绘画 `canvas`;
 - 用于媒介回放的 video 和 audio 元素;
@@ -139,17 +139,17 @@ label标签来定义表单控制间的关系,当用户选择该标签时，浏�
 #### title与h1的区别、b与strong的区别、i与em的区别？
 
 
-	title属性没有明确意义只表示是个标题，H1则表示层次明确的标题，对页面信息的抓取也有很大的影响；
+- title属性没有明确意义只表示是个标题，H1则表示层次明确的标题，对页面信息的抓取也有很大的影响；
 
-	strong是标明重点内容，有语气加强的含义，使用阅读设备阅读网络时：<strong>会重读，而<B>是展示强调内容。
+- strong是标明重点内容，有语气加强的含义，使用阅读设备阅读网络时：<strong>会重读，而<B>是展示强调内容。
 
-	i内容展示为斜体，em表示强调的文本；
+- i内容展示为斜体，em表示强调的文本；
 
-	Physical Style Elements -- 自然样式标签
-	b, i, u, s, pre
-	Semantic Style Elements -- 语义样式标签
-	strong, em, ins, del, code
-	应该准确使用语义样式标签, 但不能滥用, 如果不能确定时首选使用自然样式标签。
+- Physical Style Elements -- 自然样式标签
+- b, i, u, s, pre
+- Semantic Style Elements -- 语义样式标签
+- strong, em, ins, del, code
+- 应该准确使用语义样式标签, 但不能滥用, 如果不能确定时首选使用自然样式标签。
 
 ## CSS
 #### 介绍一下标准的CSS的盒子模型？低版本IE的盒子模型有什么不同的？
