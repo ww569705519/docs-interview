@@ -57,12 +57,15 @@ var app = new myVue({
     })
     ```
 首先我们需要定义一个myVue构造函数：
+
 ```js
 function myVue(options) {
   
 }
 ```
+
 为了初始化这个构造函数，给它添加一 个_init属性
+
 ```js
 function myVue(options) {
   this._init(options);
@@ -74,9 +77,9 @@ myVue.prototype._init = function (options) {
     this.$methods = options.methods;  // this.$methods = {increment: function(){}}
   }
   ```
-接下来实现_obverse函数，对data进行处理，重写data的set和get函数
 
-并改造_init函数
+接下来实现_obverse函数，对data进行处理，重写data的set和get函数并改造_init函数
+
 ```js
  myVue.prototype._obverse = function (obj) { // obj = {number: 0}
     var value;
@@ -113,7 +116,9 @@ myVue.prototype._init = function (options) {
     this._obverse(this.$data);
   }
   ```
+
 接下来我们写一个指令类Watcher，用来绑定更新函数，实现对DOM元素的更新
+
 ```js
 function Watcher(name, el, vm, exp, attr) {
     this.name = name;         //指令名称，例如文本节点，该值设为"text"
@@ -129,7 +134,9 @@ function Watcher(name, el, vm, exp, attr) {
     this.el[this.attr] = this.vm.$data[this.exp]; //比如 H3.innerHTML = this.data.number; 当number改变时，会触发这个update函数，保证对应的DOM内容进行了更新。
   }
   ```
+
 更新_init函数以及_obverse函数
+
 ```js
 myVue.prototype._init = function (options) {
     //...
@@ -161,7 +168,9 @@ myVue.prototype._init = function (options) {
     }
   }
   ```
+
 那么如何将view与model进行绑定呢？接下来我们定义一个_compile函数，用来解析我们的指令（v-bind,v-model,v-clickde）等，并在这个过程中对view与model进行绑定。
+
 ```js
  myVue.prototype._init = function (options) {
    //...
@@ -218,11 +227,13 @@ myVue.prototype._complie = function (root) { root 为 id为app的Element元素�
     }
   }
   ```
+
 至此，我们已经实现了一个简单vue的双向绑定功能，包括v-bind, v-model, v-click三个指令。效果如下图
 
 
 
 附上全部代码，不到150行
+
 ```html
 <!DOCTYPE html>
 <head>
