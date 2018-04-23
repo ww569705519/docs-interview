@@ -12,6 +12,7 @@ Undefined、Null、Boolean、Number、String
 Object 是 JavaScript 中所有对象的父对象
 
 数据封装类对象：Object、Array、Boolean、Number 和 String
+
 其他对象：Function、Arguments、Math、Date、RegExp、Error
 
 参考：http://www.ibm.com/developerworks/cn/web/wa-objectsinjs-v1b/index.html
@@ -30,7 +31,13 @@ Object 是 JavaScript 中所有对象的父对象
 
 ### JavaScript原型，原型链 ? 有什么特点？
 
-每个对象都会在其内部初始化一个属性，就是prototype(原型)，当我们访问一个对象的属性时，
+**原型**
+
+每个对象都会在其内部初始化一个属性，就是prototype(原型)。
+
+**原型链**
+
+当我们访问一个对象的属性时，
 如果这个对象内部不存在这个属性，那么他就会去prototype里找这个属性，这个prototype又会有自己的prototype，
 于是就这样一直找下去，也就是我们平时所说的原型链的概念。
 
@@ -64,120 +71,318 @@ javascript有两种类型的值，分别是数据类型和引用类型。
 
 引用数据类型（对象、数组和函数）
 
-### 如何将字符串转化为数字，例如'12.3b'?
-
-* parseFloat('12.3b');
-* 正则表达式，'12.3b'.match(/(\d)+(\.)?(\d)+/g)[0] * 1, 但是这个不太靠谱，提供一种思路而已。
-
-### 如何将浮点数点左边的数每三位添加一个逗号，如12000000.11转化为『12,000,000.11』?
-```js
-function commafy(num){
-	return num && num
-		.toString()
-		.replace(/(\d)(?=(\d{3})+\.)/g, function($1, $2){
-			return $2 + ',';
-		});
-}
-```
-
-### Javascript如何实现继承？
-
-1. 构造继承
-2. 原型继承
-3. 实例继承
-4. 拷贝继承
-
-原型prototype机制或apply和call方法去实现较简单，建议使用构造函数与原型混合方式。
-```js
-function Parent(){
-	this.name = 'wang';
-}
-
-function Child(){
-	this.age = 28;
-}
-Child.prototype = new Parent();//继承了Parent，通过原型
-
-var demo = new Child();
-alert(demo.age);
-alert(demo.name);//得到被继承的属性
-```
-
-### JavaScript继承的几种实现方式？
-  - 参考：[构造函数的继承](http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance.html)，[非构造函数的继承](http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance_continued.html)；
-
 
 ### javascript创建对象的几种方式？
 
-javascript创建对象简单的说,无非就是使用内置对象或各种自定义对象，当然还可以用JSON；但写法有很多种，也能混合使用。
+#### 工厂模式
+
+工厂模式是软件工程领域一种广为人知的设计模式
 
 
-1. 对象字面量的方式
+
 ```js
-	person={firstname:"Mark",lastname:"Yun",age:25,eyecolor:"black"};
+function createPerson(name, age, job){
+	var o = new Object();
+	o.name = name;
+	o.age = age;
+	o.job = job;
+	o.sayName = function(){
+	alert(this.name);
+	};
+	return o;
+}
+var person1 = createPerson("Nicholas", 29, "Software Engineer");
+var person2 = createPerson("Greg", 27, "Doctor"); 
+
+```
+优点
+
+**这种模式抽象了创建具体对象的过程**
+
+弊端
+
+**没有解决对象识别的问题（即怎样知道一个对象的类型）**
+
+#### 构造函数模式
+
+```js
+function Person(name, age, job){
+ this.name = name;
+ this.age = age;
+ this.job = job;
+ this.sayName = function(){
+ alert(this.name);
+ };
+}
+var person1 = new Person("Nicholas", 29, "Software Engineer");
+var person2 = new Person("Greg", 27, "Doctor"); 
 ```
 
-2. 用function来模拟无参的构造函数
+与工厂模式相比
+
+* 没有显式地创建对象
+* 直接将属性和方法赋给了 `this` 对象
+* 没有 return 语句
+
+要创建 Person 的新实例，必须使用 new 操作符。以这种方式调用构造函数实际上会经历以下 4 个步骤：
+
+1. 创建一个新对象
+2. 将构造函数的作用域赋给新对象(因此 `this` 就指向了这个新对象)
+3. 执行构造函数中的代码(为这个新对象添加属性)
+4. 返回新对象
+
+缺点
+
+**每个方法都有在每个实例上重新创建一遍。person1和person2都有一个sayName()的方法，但两个方法不是同一个Function实例。不同实例上的同名函数是不相等的。**
+
+**创建两个完成同样任务的Function实例没有必要，而且还有this对象在，不需要在执行代码前就把函数绑定在特定对象上，可以像下面这样。**
+
+
 ```js
-	function Person(){}
-	var person=new Person();//定义一个function，如果使用new"实例化",该function可以看作是一个Class
-	person.name="Mark";
-	person.age="25";
-	person.work=function(){
-	alert(person.name+" hello...");
-	}
-	person.work();
+function Person(name, age, job){
+	this.name = name;
+	this.age = age;
+	this.job = job;
+	this.sayName = sayName;
+}
+function sayName(){
+	alert(this.name);
+}
+var person1 = new Person("Nicholas", 29, "Software Engineer");
+var person2 = new Person("Greg", 27, "Doctor"); 
 ```
 
-3. 用function来模拟参构造函数来实现（用this关键字定义构造的上下文属性）
+*把sayName属性设置成全局的sayName函数，这样，由于sayName包含的是一个指向函数的指针，因此person1和person2对象就共享了同一个函数。*
+
+#### 原型模式
+
+理解原型对象 
+
+**我们创建的每个函数都有一个prototype属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含可以由特定类型的所有实例共享的属性和方法。prototype是通过调用构造函数而创建的那个对象实例的对象原型，使用原型对象的好处是可以让所有对象实例共享它所包含的属性和方法。**
+
 ```js
-	function Pet(name,age,hobby){
-	   this.name=name;//this作用域：当前对象
-	   this.age=age;
-	   this.hobby=hobby;
-	   this.eat=function(){
-	      alert("我叫"+this.name+",我喜欢"+this.hobby+",是个程序员");
-	   }
-	}
-	var maidou =new Pet("麦兜",25,"coding");//实例化、创建对象
-	maidou.eat();//调用eat方法
+function Person(){
+}
+Person.prototype.name = "Nicholas";
+Person.prototype.age = 29;
+Person.prototype.job = "Software Engineer";
+Person.prototype.sayName = function(){
+	alert(this.name);
+};
+var person1 = new Person(); 
 ```
 
-4. 用工厂方式来创建（内置对象）
+原型对象的问题 
 
-	 var wcDog =new Object();
-	 wcDog.name="旺财";
-	 wcDog.age=3;
-	 wcDog.work=function(){
-	   alert("我是"+wcDog.name+",汪汪汪......");
-	 }
-	 wcDog.work();
+**原型模式最大问题是由其共享的本性所导致的。**
+
+**对于包含引用类型值的属性来说，问题较为突出**
 
 
-5. 用原型方式来创建
+#### 组合使用构造模式和原型模式
+
+创建自定义类型的最常见方式，就是组合使用构造函数模式与原型模式。构造函数模式用于定义实例属性，而原型模式用于定义方法和共享的属性。
+
 ```js
-	function Dog(){
-
-	 }
-	 Dog.prototype.name="旺财";
-	 Dog.prototype.eat=function(){
-	 alert(this.name+"是个吃货");
-	 }
-	 var wangcai =new Dog();
-	 wangcai.eat();
+function Person(name, age, job){
+	this.name = name;
+	this.age = age;
+	this.job = job;
+	this.friends = ["Shelby", "Court"];
+}
+Person.prototype = {
+	constructor : Person,
+	sayName : function(){
+	alert(this.name);
+ }
+}
+var person1 = new Person("Nicholas", 29, "Software Engineer");
+var person2 = new Person("Greg", 27, "Doctor");
+person1.friends.push("Van");
+alert(person1.friends); //"Shelby,Count,Van"
+alert(person2.friends); //"Shelby,Count"
+alert(person1.friends === person2.friends); //false
+alert(person1.sayName === person2.sayName); //true 
 ```
 
-5. 用混合方式来创建
+#### 动态原型模式
+#### 寄生构造模式
+#### 稳妥构造模式
+
+*由于以上模式使用频率过低，故不多做撰述*
+
+### Javascript如何实现继承？
+
+#### 原型链
+
+**基本思想：利用原型让一个引用类型继承另外一个引用类型的属性和方法。**
+
+**构造函数，原型，实例之间的关系：每个构造函数都有一个原型对象，原型对象包含一个指向构造函数的指针，而实例都包含一个指向原型对象的内部指针。**
+
+原型链实现继承例子：
 ```js
-	function Car(name,price){
-	  this.name=name;
-	  this.price=price;
-	}
-	 Car.prototype.sell=function(){
-	   alert("我是"+this.name+"，我现在卖"+this.price+"万元");
-	  }
-	var camry =new Car("凯美瑞",27);
-	camry.sell();
+function SuperType() {
+	this.property = true;
+}
+SuperType.prototype.getSuperValue = function() {
+	return this.property;
+}
+function subType() {
+	this.property = false;
+}
+//继承了SuperType
+SubType.prototype = new SuperType();
+SubType.prototype.getSubValue = function (){
+	return this.property;
+}
+var instance = new SubType();
+console.log(instance.getSuperValue());//true
+```
+
+#### 借用构造函数
+
+**基本思想：在子类型构造函数的内部调用超类构造函数，通过使用call()和apply()方法可以在新创建的对象上执行构造函数。**
+
+```js
+function SuperType() {
+	this.colors = ["red","blue","green"];
+}
+function SubType() {
+	SuperType.call(this);//继承了SuperType
+}
+var instance1 = new SubType();
+instance1.colors.push("black");
+console.log(instance1.colors);//"red","blue","green","black"
+var instance2 = new SubType();
+console.log(instance2.colors);//"red","blue","green"
+```
+
+#### 组合继承
+
+**基本思想：将原型链和借用构造函数的技术组合在一块，从而发挥两者之长的一种继承模式。**
+
+```js
+function SuperType(name) {
+	this.name = name;
+	this.colors = ["red","blue","green"];
+}
+SuperType.prototype.sayName = function() {
+	console.log(this.name);
+}
+function SubType(name, age) {
+	SuperType.call(this,name);//继承属性
+	this.age = age;
+}
+//继承方法
+SubType.prototype = new SuperType();
+Subtype.prototype.constructor = Subtype;
+Subtype.prototype.sayAge = function() {
+	console.log(this.age);
+}
+var instance1 = new SubType("EvanChen",18);
+instance1.colors.push("black");
+consol.log(instance1.colors);//"red","blue","green","black"
+instance1.sayName();//"EvanChen"
+instance1.sayAge();//18
+var instance2 = new SubType("EvanChen666",20);
+console.log(instance2.colors);//"red","blue","green"
+instance2.sayName();//"EvanChen666"
+instance2.sayAge();//20
+```
+
+#### 原型式继承
+
+**基本想法：借助原型可以基于已有的对象创建新对象，同时还不必须因此创建自定义的类型。**
+
+原型式继承的思想可用以下函数来说明：
+```js
+function object(o) {
+function F(){}
+F.prototype = o;
+return new F();
+}
+```
+
+```js
+var person = {
+name:"EvanChen",
+friends:["Shelby","Court","Van"];
+};
+var anotherPerson = object(person);
+anotherPerson.name = "Greg";
+anotherPerson.friends.push("Rob");
+var yetAnotherPerson = object(person);
+yetAnotherPerson.name = "Linda";
+yetAnotherPerson.friends.push("Barbie");
+console.log(person.friends);//"Shelby","Court","Van","Rob","Barbie"
+```
+
+ECMAScript5通过新增Object.create()方法规范化了原型式继承，这个方法接收两个参数：一个用作新对象原型的对象和一个作为新对象定义额外属性的对象。
+
+```js
+var person = {
+name:"EvanChen",
+friends:["Shelby","Court","Van"];
+};
+var anotherPerson = Object.create(person);
+anotherPerson.name = "Greg";
+anotherPerson.friends.push("Rob");
+var yetAnotherPerson = Object.create(person);
+yetAnotherPerson.name = "Linda";
+yetAnotherPerson.friends.push("Barbie");
+console.log(person.friends);//"Shelby","Court","Van","Rob","Barbie"
+```
+
+#### 寄生式继承
+
+**基本思想：创建一个仅用于封装继承过程的函数，该函数在内部以某种方式来增强对象，最后再像真正是它做了所有工作一样返回对象。**
+
+```js
+function createAnother(original) {
+var clone = object(original);
+clone.sayHi = function () {
+alert("hi");
+};
+return clone;
+}
+var person = {
+name:"EvanChen",
+friends:["Shelby","Court","Van"];
+};
+var anotherPerson = createAnother(person);
+anotherPerson.sayHi();///"hi"
+```
+
+#### 寄生组合式继承
+
+**基本思想：通过借用函数来继承属性，通过原型链的混成形式来继承方法**
+
+```js
+function inheritProperty(subType, superType) {
+var prototype = object(superType.prototype);//创建对象
+prototype.constructor = subType;//增强对象
+subType.prototype = prototype;//指定对象
+}
+```
+
+例子
+
+```js
+function SuperType(name){
+	this.name = name;
+	this.colors = ["red","blue","green"];
+}
+SuperType.prototype.sayName = function (){
+	alert(this.name);
+};
+function SubType(name,age){
+	SuperType.call(this,name);
+	this.age = age;
+}
+inheritProperty(SubType,SuperType);
+SubType.prototype.sayAge = function() {
+	alert(this.age);
+}
 ```
 
 ### Javascript作用链域?
@@ -446,39 +651,38 @@ innerHTML可以重绘页面的一部分
 ### DOM操作——怎样添加、移除、移动、复制、创建和查找节点?
 
 1. 创建新节点
-	createDocumentFragment()    //创建一个DOM片段
-	createElement()   //创建一个具体的元素
-	createTextNode()   //创建一个文本节点
+	* createDocumentFragment()    //创建一个DOM片段
+	* createElement()   //创建一个具体的元素
+	* createTextNode()   //创建一个文本节点
 2. 添加、移除、替换、插入
-	appendChild()
-	removeChild()
-	replaceChild()
-	insertBefore() //在已有的子节点前插入一个新的子节点
+	* appendChild()
+	* removeChild()
+	* replaceChild()
+	* insertBefore() //在已有的子节点前插入一个新的子节点
 3. 查找
-	getElementsByTagName()    //通过标签名称
-	getElementsByName()    //通过元素的Name属性的值(IE容错能力较强，会得到一个数组，其中包括id等于name值的)
-	getElementById()    //通过元素Id，唯一性
+	* getElementsByTagName()    //通过标签名称
+	* getElementsByName()    //通过元素的Name属性的值(IE容错能力较强，会得到一个数组，其中包括id等于name值的)
+	* getElementById()    //通过元素Id，唯一性
 
 ### .call() 和 .apply() 的区别？
 
+**call 和 apply 都是为了改变某个函数运行时的 `context` 即上下文而存在的，换句话说，就是为了改变函数体内部 this 的指向**
 
-例子中用 add 来替换 sub，add.call(sub,3,1) == add(3,1) ，所以运行结果为：alert(4);
+`apply`：调用一个对象的一个方法，用另一个对象替换当前对象。例如：`B.apply(A, arguments);`即A对象应用B对象的方法。
 
-注意：js 中的函数其实是对象，函数名是对 Function 对象的引用。
+`call`：调用一个对象的一个方法，用另一个对象替换当前对象。例如：`B.call(A, args1,args2);`即A对象调用B对象的方法。
 
-```js
-	function add(a,b)
-	{
-	    alert(a+b);
-	}
+**共同处**
 
-	function sub(a,b)
-	{
-	    alert(a-b);
-	}
+都“可以用来代替另一个对象调用一个方法，将一个函数的对象上下文从初始的上下文改变为由thisObj指定的新对象”。
 
-	add.call(sub,3,1);
-```
+**不同之处**
+
+apply：最多只能有两个参数——新this对象和一个数组argArray。如果给该方法传递多个参数，则把参数都写进这个数组里面，当然，即使只有一个参数，也要写进数组里。如果argArray不是一个有效的数组或arguments对象，那么将导致一个TypeError。如果没有提供argArray和thisObj任何一个参数，那么Global对象将被用作thisObj，并且无法被传递任何参数。
+
+call：它可以接受多个参数，第一个参数与apply一样，后面则是一串参数列表。这个方法主要用在js对象各方法相互调用的时候，使当前this实例指针保持一致，或者在特殊情况下需要改变this指针。如果没有提供thisObj参数，那么 Global 对象被用作thisObj。 
+
+**实际上，apply和call的功能是一样的，只是传入的参数列表形式不同。**
 
 
 ### 那些操作会造成内存泄漏？
@@ -486,8 +690,8 @@ innerHTML可以重绘页面的一部分
 内存泄漏指任何对象在您不再拥有或需要它之后仍然存在。
 垃圾回收器定期扫描对象，并计算引用了每个对象的其他对象的数量。如果一个对象的引用数量为 0（没有其他对象引用过该对象），或对该对象的惟一引用是循环的，那么该对象的内存即可回收。
 
-setTimeout 的第一个参数使用字符串而非函数的话，会引发内存泄漏。
-闭包、控制台日志、循环（在两个对象彼此引用且彼此保留时，就会产生一个循环）
+**setTimeout 的第一个参数使用字符串而非函数的话，会引发内存泄漏。
+闭包、控制台日志、循环（在两个对象彼此引用且彼此保留时，就会产生一个循环）**
 
 ### Object.is() 与原来的比较操作符“ ===”、“ ==”的区别？
 
@@ -501,11 +705,13 @@ Object.is 应被认为有其特殊的用途，而不能用它认为它比其它�
 
 ### 什么叫优雅降级和渐进增强？
 
-优雅降级：Web站点在所有新式浏览器中都能正常工作，如果用户使用的是老式浏览器，则代码会针对旧版本的IE进行降级处理了,使之在旧式浏览器上以某种形式降级体验却不至于完全不能用。
-如：border-shadow
+**渐进增强**
 
-渐进增强：从被所有浏览器支持的基本功能开始，逐步地添加那些只有新版本浏览器才支持的功能,向页面增加不影响基础浏览器的额外样式和功能的。当浏览器支持时，它们会自动地呈现出来并发挥作用。
-如：默认使用flash上传，但如果浏览器支持 HTML5 的文件上传功能，则使用HTML5实现更好的体验；
+针对低版本浏览器进行构建页面，保证最基本的功能，然后再针对高级浏览器进行效果、交互等改进和追加功能达到更好的用户体验。
+
+**优雅降级**
+
+一开始就构建完整的功能，然后再针对低版本浏览器进行兼容。
 
 
 ### 对Node的优点和缺点提出了自己的看法？
@@ -524,26 +730,27 @@ Object.is 应被认为有其特殊的用途，而不能用它认为它比其它�
 
 
 
-- 一个页面从输入 URL 到页面加载显示完成，这个过程中都发生了什么？（流程说的越详细越好）
+## 一个页面从输入 URL 到页面加载显示完成，这个过程中都发生了什么？（流程说的越详细越好）
 
-		  注：这题胜在区分度高，知识点覆盖广，再不懂的人，也能答出几句，
-		  而高手可以根据自己擅长的领域自由发挥，从URL规范、HTTP协议、DNS、CDN、数据库查询、
-		  到浏览器流式解析、CSS规则构建、layout、paint、onload/domready、JS执行、JS API绑定等等；
+注：这题胜在区分度高，知识点覆盖广，再不懂的人，也能答出几句，
+而高手可以根据自己擅长的领域自由发挥，从URL规范、HTTP协议、DNS、CDN、数据库查询、
+到浏览器流式解析、CSS规则构建、layout、paint、onload/domready、JS执行、JS API绑定等等；
 
-		  详细版：
-			1、浏览器会开启一个线程来处理这个请求，对 URL 分析判断如果是 http 协议就按照 Web 方式来处理;
-			2、调用浏览器内核中的对应方法，比如 WebView 中的 loadUrl 方法;
-		    3、通过DNS解析获取网址的IP地址，设置 UA 等信息发出第二个GET请求;
-			4、进行HTTP协议会话，客户端发送报头(请求报头);
-		    5、进入到web服务器上的 Web Server，如 Apache、Tomcat、Node.JS 等服务器;
-		    6、进入部署好的后端应用，如 PHP、Java、JavaScript、Python 等，找到对应的请求处理;
-			7、处理结束回馈报头，此处如果浏览器访问过，缓存上有对应资源，会与服务器最后修改时间对比，一致则返回304;
-		    8、浏览器开始下载html文档(响应报头，状态码200)，同时使用缓存;
-		    9、文档树建立，根据标记请求所需指定MIME类型的文件（比如css、js）,同时设置了cookie;
-		    10、页面开始渲染DOM，JS根据DOM API操作DOM,执行事件绑定等，页面显示完成。
+**详细版**
+1. 浏览器会开启一个线程来处理这个请求，对 URL 分析判断如果是 http 协议就按照 Web 方式来处理;
+2. 调用浏览器内核中的对应方法，比如 WebView 中的 loadUrl 方法;
+3. 通过DNS解析获取网址的IP地址，设置 UA 等信息发出第二个GET请求;
+4. 进行HTTP协议会话，客户端发送报头(请求报头);
+5. 进入到web服务器上的 Web Server，如 Apache、Tomcat、Node.JS 等服务器;
+6. 进入部署好的后端应用，如 PHP、Java、JavaScript、Python 等，找到对应的请求处理;
+7. 处理结束回馈报头，此处如果浏览器访问过，缓存上有对应资源，会与服务器最后修改时间对比，一致则返回304;
+8. 浏览器开始下载html文档(响应报头，状态码200)，同时使用缓存;
+9. 文档树建立，根据标记请求所需指定MIME类型的文件（比如css、js）,同时设置了cookie;
+10. 页面开始渲染DOM，JS根据DOM API操作DOM,执行事件绑定等，页面显示完成。
 
-		  简洁版：
-			浏览器根据请求的URL交给DNS域名解析，找到真实IP，向服务器发起请求；
-			服务器交给后台处理完成后返回数据，浏览器接收文件（HTML、JS、CSS、图象等）；
-			浏览器对加载到的资源（HTML、JS、CSS等）进行语法解析，建立相应的内部数据结构（如HTML的DOM）；
-			载入解析到的资源文件，渲染页面，完成。
+**简洁版**
+
+1. 浏览器根据请求的URL交给DNS域名解析，找到真实IP，向服务器发起请求；
+2. 服务器交给后台处理完成后返回数据，浏览器接收文件（HTML、JS、CSS、图象等）；
+3. 浏览器对加载到的资源（HTML、JS、CSS等）进行语法解析，建立相应的内部数据结构（如HTML的DOM）；
+4. 载入解析到的资源文件，渲染页面，完成。

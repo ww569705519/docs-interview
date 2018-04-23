@@ -76,13 +76,18 @@
 **支持HTML5新标签**：
 
 - IE8/IE7/IE6支持通过`document.createElement`方法产生的标签，
+
 - 可以利用这一特性让这些浏览器支持HTML5新标签，
+
 - 浏览器支持新标签后，还需要添加标签默认的样式。
 
- 当然也可以直接使用成熟的框架、比如`html5shim`;
+- 当然也可以直接使用成熟的框架、比如`html5shim`;
+
+ ```html
  <!--[if lt IE 9]>
 	<script> src="http://html5shim.googlecode.com/svn/trunk/html5.js"</script>
  <![endif]-->
+```
 
 !> 如何区分HTML5： DOCTYPE声明\新增的结构元素\功能元素
 
@@ -127,30 +132,14 @@
 
 label标签来定义表单控制间的关系,当用户选择该标签时，浏览器会自动将焦点转到和标签相关的表单控件上。
 ```html
-	<label for="Name">Number:</label>
-	<input type=“text“name="Name" id="Name"/>
-
-	<label>Date:<input type="text" name="B"/></label>
+<label for="Name">Number:</label>
+<input type=“text“name="Name" id="Name"/>
+<label>Date:<input type="text" name="B"/></label>
 ```
 ### 如何实现浏览器内多个标签页之间的通信? (阿里)
 
 - WebSocket、SharedWorker；
 - 也可以调用localstorge、cookies等本地存储方式；
-
-### title与h1的区别、b与strong的区别、i与em的区别？
-
-
-- title属性没有明确意义只表示是个标题，H1则表示层次明确的标题，对页面信息的抓取也有很大的影响；
-
-- strong是标明重点内容，有语气加强的含义，使用阅读设备阅读网络时：<strong>会重读，而<B>是展示强调内容。
-
-- i内容展示为斜体，em表示强调的文本；
-
-- Physical Style Elements -- 自然样式标签
-- b, i, u, s, pre
-- Semantic Style Elements -- 语义样式标签
-- strong, em, ins, del, code
-- 应该准确使用语义样式标签, 但不能滥用, 如果不能确定时首选使用自然样式标签。
 
 ## CSS
 ### 介绍一下标准的CSS的盒子模型？低版本IE的盒子模型有什么不同的？
@@ -202,13 +191,9 @@ important 比 内联优先级高
 举例：
 
 - p:first-of-type	选择属于其父元素的首个 `<p>` 元素的每个 `<p>` 元素。
-
 - p:last-of-type	选择属于其父元素的最后 `<p>` 元素的每个 `<p>` 元素。
-
 - p:only-of-type	选择属于其父元素唯一的 `<p>` 元素的每个 `<p>` 元素。
-
 - p:only-child		选择属于其父元素的唯一子元素的每个 `<p>` 元素。
-
 - p:nth-child(2)	选择属于其父元素的第二个子元素的每个 `<p>` 元素。
 
 
@@ -224,22 +209,22 @@ important 比 内联优先级高
 *  水平居中：给div设置一个宽度，然后添加margin:0 auto属性
 ```css
 div{
-		width:200px;
-		margin:0 auto;
+	width:200px;
+	margin:0 auto;
 }
 ```
 *  让绝对定位的div居中
 ```css
 div {
-		position: absolute;
-		width: 300px;
-		height: 300px;
-		margin: auto;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		right: 0;
-		background-color: pink;	/* 方便看效果 */
+	position: absolute;
+	width: 300px;
+	height: 300px;
+	margin: auto;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: pink;	/* 方便看效果 */
 }
 ```
 *  水平垂直居中一
@@ -248,13 +233,13 @@ div {
 设置层的外边距
 ```css
 div {
-		position: relative;		/* 相对定位或绝对定位均可 */
-		width:500px;
-		height:300px;
-		top: 50%;
-		left: 50%;
-		margin: -150px 0 0 -250px;     	/* 外边距为自身宽高的一半 */
-		background-color: pink;	 	/* 方便看效果 */
+	position: relative;		/* 相对定位或绝对定位均可 */
+	width:500px;
+	height:300px;
+	top: 50%;
+	left: 50%;
+	margin: -150px 0 0 -250px;     	/* 外边距为自身宽高的一半 */
+	background-color: pink;	 	/* 方便看效果 */
 
 }
 ```
@@ -263,13 +248,13 @@ div {
 未知容器的宽高，利用 `transform` 属性
 ```css
 div {
-		position: absolute;		/* 相对定位或绝对定位均可 */
-		width:500px;
-		height:300px;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		background-color: pink;	 	/* 方便看效果 */
+	position: absolute;		/* 相对定位或绝对定位均可 */
+	width:500px;
+	height:300px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: pink;	 	/* 方便看效果 */
 
 }
 ```
@@ -279,15 +264,15 @@ div {
 实际使用时应考虑兼容性
 ```css
 .container {
-		display: flex;
-		align-items: center; 		/* 垂直居中 */
-		justify-content: center;	/* 水平居中 */
+	display: flex;
+	align-items: center; 		/* 垂直居中 */
+	justify-content: center;	/* 水平居中 */
 
 }
 .container div {
-		width: 100px;
-		height: 100px;
-		background-color: pink;		/* 方便看效果 */
+	width: 100px;
+	height: 100px;
+	background-color: pink;		/* 方便看效果 */
  }  
 
 ```
@@ -340,11 +325,11 @@ div {
 把上、左、右三条边隐藏掉（颜色设为 `transparent`）
 ```css
 demo {
-		width: 0;
-		height: 0;
-		border-width: 20px;
-		border-style: solid;
-		border-color: transparent transparent red transparent;
+	width: 0;
+	height: 0;
+	border-width: 20px;
+	border-style: solid;
+	border-color: transparent transparent red transparent;
 }
 ```
 
@@ -360,10 +345,10 @@ demo {
 
 ```css
 .bb{
-		background-color:red;/*所有识别*/
-		background-color:#00deff\9; /*IE6、7、8识别*/
-		+background-color:#a200ff;/*IE6、7识别*/
-		_background-color:#1e0bd1;/*IE6识别*/
+	background-color:red;/*所有识别*/
+	background-color:#00deff\9; /*IE6、7、8识别*/
+	background-color:#a200ff;/*IE6、7识别*/
+	background-color:#1e0bd1;/*IE6识别*/
 }
 ```
 
@@ -411,13 +396,6 @@ button, input, select, textarea { font-size:100%; }
 table { border-collapse:collapse; border-spacing:0; }
 ```
 
-
-### CSS里的visibility属性有个collapse属性值是干嘛用的？在不同浏览器下以后什么区别？
-
-* 对于普通元素visibility:collapse;会将元素完全隐藏,不占据页面布局空间,与display:none;表现相同.
-* 如果目标元素为table,visibility:collapse;将table隐藏,但是会占据页面布局空间.
-* 仅在Firefox下起作用,IE会显示元素,Chrome会将元素隐藏,但是占据空间.
-
 ### position跟display、margin collapse、overflow、float这些特性相互叠加后会怎么样？
 
 - 如果元素的`display为none`,那么元素不被渲染,position,float不起作用
@@ -454,51 +432,58 @@ div{
 
 !> 清除浮动是为了清除使用浮动元素产生的影响。浮动的元素，高度会塌陷，而高度的塌陷使我们页面后面的布局不能正常显示。
 
-1. 父级div定义height；
-2. 父级div 也一起浮动；
-3. 常规的使用一个class；
-```css
-.clearfix::before, .clearfix::after {
-content: " ";
-display: table;
+方式一:使用overflow属性来清除浮动
+```csss
+.ovh{
+
+	overflow:hidden;
+
 }
-.clearfix::after {
-clear: both;
+```
+先找到浮动盒子的父元素，再在父元素中添加一个属性：overflow:hidden,就是清除这个父元素中的子元素浮动对页面的影响.
+
+*注意：一般情况下也不会使用这种方式，因为overflow:hidden有一个特点，离开了这个元素所在的区域以后会被隐藏（overflow:hidden会将超出的部分隐藏起来）.*
+
+方式二:使用额外标签法
+```css
+.clear{
+	clear:both;
+}
+```
+在浮动的盒子之下再放一个标签，在这个标签中使用clear:both，来清除浮动对页面的影响.
+
+a. 内部标签：会将这个浮动盒子的父盒子高度重新撑开.
+
+b.外部标签：会将这个浮动盒子的影响清除，但是不会撑开父盒子.
+
+*注意：一般情况下不会使用这一种方式来清除浮动。因为这种清除浮动的方式会增加页面的标签，造成结构的混乱.*
+
+方法三:使用伪元素来清除浮动(after意思:后来,以后)
+```css
+.clearfix:after{
+	content:"";//设置内容为空
+	height:0;//高度为0
+	line-height:0;//行高为0
+	display:block;//将文本转为块级元素
+	visibility:hidden;//将元素隐藏
+	clear:both//清除浮动
+}
+
+.clearfix{
+	zoom:1;为了兼容IE
+}
+```
+方法四:使用双伪元素清除浮动
+
+```css
+.clearfix:before,.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
 }
 .clearfix {
-*zoom: 1;
+  zoom: 1;
 }
-```
-
-### 什么是外边距合并？
-
-外边距合并指的是，当两个垂直外边距相遇时，它们将形成一个外边距。
-合并后的外边距的高度等于两个发生合并的外边距的高度中的较大者。
-w3school介绍网址： http://www.w3school.com.cn/css/css_margin_collapsing.asp
-
-### 移动端的布局用过媒体查询吗？
-
-
-假设你现在正用一台显示设备来阅读这篇文章，同时你也想把它投影到屏幕上，或者打印出来，
-而显示设备、屏幕投影和打印等这些媒介都有自己的特点，CSS就是为文档提供在不同媒介上展示的适配方法
-
-<!-- link元素中的CSS媒体查询 -->
-当媒体查询为真时，相关的样式表或样式规则会按照正常的级联规被应用。
-当媒体查询返回假， <link> 标签上带有媒体查询的样式表 仍将被下载 （只不过不会被应用）。
-```html5
-<link rel="stylesheet" media="(max-width: 800px)" href="example.css" />
-```
-<!-- 样式表中的CSS媒体查询 -->
-包含了一个媒体类型和至少一个使用 宽度、高度和颜色等媒体属性来限制样式表范围的表达式。
-CSS3加入的媒体查询使得无需修改内容便可以使样式应用于某些特定的设备范围。
-```
-<style>
-@media (min-width: 700px) and (orientation: landscape){
-.sidebar {
-display: none;
-}
-}
-</style>
 ```
 
 ### CSS优化、提高性能的方法有哪些？
@@ -523,19 +508,6 @@ display: none;
 - 单冒号(:)用于CSS3伪类，双冒号(::)用于CSS3伪元素。（伪元素由双冒号和伪元素名称组成）
 - 双冒号是在当前规范中引入的，用于区分伪类和伪元素。不过浏览器需要同时支持旧的已经存在的伪元素写法，
 
-### 如何修改chrome记住密码后自动填充表单的黄色背景 ？
-
-```css
-input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
-		background-color: rgb(250, 255, 189); /* #FAFFBD; */
-		background-image: none;
-		color: rgb(0, 0, 0);
-}
-```
-
-### overflow: scroll时不能平滑滚动的问题怎么处理？
-
-
 ### 什么是Cookie 隔离？（或者说：请求资源的时候不要让它带cookie怎么做）
 
 如果静态文件都放在主域名下，那静态文件请求的时候都带有的cookie的数据提交给server的，非常浪费流量，
@@ -550,13 +522,16 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 
 ### style标签写在body后与body前有什么区别？
 
+写在head标签中利于浏览器逐步渲染（resources downloading->CSSOM+DOM->RenderTree(composite)->Layout->paint）。
+
+具体渲染过程请参考http://blog.csdn.net/wozaixia
+
+写在body标签后由于浏览器以逐行方式对html文档进行解析，当解析到写在尾部的样式表（外联或写在style标签）会导致浏览器停止之前的渲染，等待加载且解析样式表完成之后重新渲染，在windows的IE下可能会出现FOUC现象（即样式失效导致的页面闪烁问题）
+
 ### 什么是CSS 预处理器 / 后处理器？
 
-- 预处理器例如：`LESS、Sass、Stylus`，用来预编译`Sass`或`less`，增强了css代码的复用性，
+- 预处理器例如：`Less、Sass、Stylus`，用来预编译`Sass`或`less`，增强了css代码的复用性，
 还有层级、mixin、变量、循环、函数等，具有很方便的UI组件模块化开发能力，极大的提高工作效率。
 
 - 后处理器例如：`PostCSS`，通常被视为在完成的样式表中根据CSS规范处理CSS，让其更有效；目前最常做的
 是给CSS属性添加浏览器私有前缀，实现跨浏览器兼容性的问题。
-
-
-### rem布局的优缺点
